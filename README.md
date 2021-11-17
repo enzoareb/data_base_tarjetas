@@ -1,14 +1,6 @@
-= Bases De Datos I: Trabajo Practico
-
-Arebalos Enzo <enzoarebalos@outlook.com>
-
-Cardozo Marcos <marcoscar2001@gmail.com> 
-
-Richter Valentin  <valenrichter11@gmail.com>
+= Bases De Datos : Sistema de pago con tarjetas de credito
 
 {docdate}
-
-Docentes : Hernán Rondelli, Hernán Czemerinsky, Omar Argañaraz
 
 :title-page:
 :numbered:
@@ -26,35 +18,7 @@ Las tablas _cliente_, _tarjeta_, _comercio_ y _cierre_ contendran informacion de
 
 == Descripción
 
-
-=== *Decisiones tomadas*
-
-Lo primero a destacar es que vimos conveniente cambiar en la tabla _cliente_  el tipo de dato int en la llave primaria _nrocliente_ 
-por un serial (puede verse en los primeros commits), ya que lo necesitabamos para una funcion,luego volvimos a dejarlo 
-en int porque la funcion implementada quedo descartada.
-
-En la tabla _compra_ optamos por cambiar el tipo de la llave primaria _nrooperacion_ de int a serial, ya que en principio
-no sabriamos el _nrooperacion_ que sigue cuando se genera una compra (esto es dinamico) y ademas es unico, tener un 
-contador no podria ser una buena opcion para resolver este problema en una base de datos.
-
-Del mismo modo en la tabla _rechazo_, optamos por cambiar el tipo de la llave primaria _nrorechazo_ de int a serial. 
-
-En la tabla _alerta_ repetimos esta decision ya que si se generan automaticamente registros en la tabla, no sabriamos
-por que _nroalerta_ iria (llave primaria) y como ya nombramos, no seria buena idea tener un contador.
-
-En la tabla _rechazo_ implementamos una sola FK (_nronegocio_), la misma es utilizada directamente por la funcion 
-`validar_tarjeta` (que esta presente tanto en _main.go_ como en el archivo _sql_, se puede probar en los distintos 
-archivos por separado) que verifica que exista una tarjeta.La FK _nronegocio_ es unica ya que si un negocio
-no existe no deberia haber ahi un consumo.
-
-=== Problemas que solucionamos:
-
-Dificultad en la  asignacion de valores para las claves primarias cada vez que se genera un nuevo registro, 
-optamos por implementar el tipo de dato _serial_, que se encarga de completar dinamicamente los valores de las PK.
-
-=== dificultades
-Tuvimos un problema con la conexion entre modulos de go pero pudimos solucionarlo. Se generaron dudas con la relacion entre archivos que existian en diferentes directorios y que no podian comunicarse entre si, optamos por tener un unico directorio y colocar los archivos de  tanto la creacion y manipulacion de la base de datos mediante go, como los archivos encargados de la creacion y manipulacion de la base de datos NoSQL. 
-
+La aplicacion cuenta con un menu principal donde podemos acceder a las distintas opciones para cargar datos y consultarlos a traves de una base de datos Postgres, como asi tambien utilizar una aproximacion al uso de datos en una BD nosql con el fin de comparar ambos sistemas de persistencia
 
 == Implementación
 
@@ -190,17 +154,4 @@ Se ejecuta luego de que se ingrese algun registro nuevo a la tabla _rechazo_, ej
 alertas_a_compras_trg()::
 Se ejecuta luego de que se ingrese algun registro nuevo a la tabla _compra_, ejecuta el SP `alertas_a_compras`.
 
-== Conclusiones
-
-El trabajo practico nos vino muy bien para afianzarnos mucho mas con las bases de datos y poder poner en practica
-la teoria aprendida durante toda la materia. Tuvimos que leer documentacion y entender gran parte de los principales metodos
-del lenguaje GO y como estos interacturan con PostgresSQL. 
-
-Al ser un entorno bastante diferente a la programacion en si y quizas no tener una herramienta que facilite los casos de
-test como podria ser JUnit, los metodos de test que nos proponiamos muchas veces eran dificiles de corroborar pero pudimos hacernos
-algunos durante todo el trabajo que corrian bien.
-
-Si bien teniamos conocimientos de programacion gracias a las materias anteriores, podemos decir que ahora tenemos el factor
-mas importante en un sistema, los datos, sabemos como aplicar teoria y practica para sacar andando un pequeño sistema y que ademas
-eficiente y flexible gracias a la utilizacion de Storage Procedures y Triggers.   
 
